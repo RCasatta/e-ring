@@ -7,6 +7,9 @@ mod avg_std;
 mod rescale;
 mod ring;
 
+#[cfg(feature = "hist")]
+pub mod hist;
+
 pub use ring::Ring;
 
 pub use rescale::FindRange;

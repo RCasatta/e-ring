@@ -11,6 +11,17 @@ pub struct Range<T> {
     pub max: T,
 }
 
+impl<T: PartialOrd> Range<T> {
+    /// Creates a Range checking min <= max
+    pub fn new(min: T, max: T) -> Option<Self> {
+        if min <= max {
+            Some(Range { min, max })
+        } else {
+            None
+        }
+    }
+}
+
 /// Trait defining a `range` method to find min and max in one iteration
 pub trait FindRange<T> {
     /// calculate min and max with one iteration
@@ -19,7 +30,7 @@ pub trait FindRange<T> {
 
 impl<T: PartialOrd + Copy + Default, const N: usize> FindRange<T> for Ring<T, N> {
     fn range(&self) -> Option<Range<T>> {
-        if self.len() == 0 {
+        if self.is_empty() {
             return None;
         }
         let mut iter = self.iter();
@@ -56,7 +67,7 @@ impl<
             + Add<Output = T>
             + Mul<Output = T>
             + Div<Output = T>
-            + Into<f32>,
+            + Into<f64>,
         const N: usize,
     > Ring<T, N>
 {
@@ -79,11 +90,11 @@ impl<
             + Add<Output = T>
             + Mul<Output = T>
             + Div<Output = T>
-            + Into<f32>,
+            + Into<f64>,
         const N: usize,
     > Iterator for RescaleIterator<'_, T, N>
 {
-    type Item = f32;
+    type Item = f64;
     // TODO would be nice if type returned is `T`
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -99,7 +110,6 @@ impl<
 }
 
 impl<T: Sub<Output = T> + Copy> Range<T> {
-
     /// Returns the range delta
     pub fn delta(&self) -> T {
         self.max - self.min

@@ -1,5 +1,5 @@
 /// Append only data structure, replace oldest element when reach maximum capacity of `N` elements
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Ring<T, const N: usize> {
     data: [T; N],
     next: usize,
@@ -12,6 +12,12 @@ pub struct RingIterator<'a, T, const N: usize> {
     start: usize,
     count: usize,
     circular: &'a Ring<T, N>,
+}
+
+impl<T: Copy + Default, const N: usize> Default for Ring<T, N> {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl<T: Copy + Default, const N: usize> Ring<T, N> {
@@ -38,6 +44,16 @@ impl<T: Copy + Default, const N: usize> Ring<T, N> {
     /// Number of elements in the `Ring`, it never decreases.
     pub fn len(&self) -> usize {
         self.len
+    }
+
+    /// If the `Ring` is empty. Zero elements
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
+    /// Return the max size of the ring
+    pub fn size(&self) -> usize {
+        N
     }
 
     /// Returns an iterator over the `Ring` starting from the oldest appended element
