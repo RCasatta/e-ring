@@ -56,6 +56,17 @@ impl<T: Copy + Default, const N: usize> Ring<T, N> {
         N
     }
 
+    /// Return the last item inserted
+    pub fn last(&self) -> Option<T> {
+        if self.len == 0 {
+            None
+        } else if self.next == 0 {
+            Some(self.data[self.data.len() - 1])
+        } else {
+            Some(self.data[self.next - 1])
+        }
+    }
+
     /// Returns an iterator over the `Ring` starting from the oldest appended element
     pub fn iter(&self) -> RingIterator<T, N> {
         RingIterator {
@@ -93,8 +104,10 @@ mod test {
     #[test]
     pub fn test_ring() {
         let mut circ: Ring<u32, RING_SIZE> = Ring::new();
+        assert_eq!(circ.last(), None);
         assert_eq!(0, circ.len());
         circ.append(1u32);
+        assert_eq!(circ.last(), Some(1));
         assert_eq!(1, circ.len());
         circ.append(2);
         circ.append(3);
@@ -108,6 +121,7 @@ mod test {
         assert_eq!(3, circ.len());
         for i in 0..1000 {
             circ.append(i);
+            assert_eq!(circ.last(), Some(i));
         }
         assert_eq!(RING_SIZE, circ.len());
 
