@@ -4,11 +4,10 @@
 //!
 
 use crate::{FindRange, Range, Ring};
-use embedded_graphics::drawable::Drawable;
 use embedded_graphics::geometry::{Point, Size};
 use embedded_graphics::prelude::{DrawTarget, PixelColor, Primitive};
-use embedded_graphics::primitives::Line;
-use embedded_graphics::style::PrimitiveStyle;
+use embedded_graphics::primitives::{Line, PrimitiveStyle};
+use embedded_graphics::Drawable;
 
 /// Represent a histogram with values contained in the `ring` but rescaled to fit in the window
 /// defined by the `upper_left` and `lower_right` points
@@ -47,7 +46,7 @@ impl Hist {
     }
 
     /// Draw the histogram on a display
-    pub fn draw<C: PixelColor, D: DrawTarget<C>, const N: usize>(
+    pub fn draw<C: PixelColor, D: DrawTarget<Color = C>, const N: usize>(
         &self,
         ring: &Ring<i16, N>,
         display: &mut D,
