@@ -70,7 +70,7 @@ impl<T: Copy + Default, const N: usize> Ring<T, N> {
     /// Returns an iterator over the `Ring` starting from the oldest appended element
     pub fn iter(&self) -> RingIterator<T, N> {
         RingIterator {
-            circular: &self,
+            circular: self,
             start: if self.len() == self.data.len() {
                 self.next
             } else {
