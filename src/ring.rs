@@ -79,6 +79,12 @@ impl<T: Copy + Default, const N: usize> Ring<T, N> {
             count: 0usize,
         }
     }
+
+    /// Resets the `Ring`
+    pub fn clear(&mut self) {
+        self.len = 0;
+        self.next = 0;
+    }
 }
 
 impl<'a, T: Copy + Default, const N: usize> Iterator for RingIterator<'a, T, N> {
